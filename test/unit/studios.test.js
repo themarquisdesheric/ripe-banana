@@ -13,4 +13,10 @@ describe('plant model', () => {
       });
   });
 
+  it('accepts valid documents', () => {
+    let studio = new Studio({ name: 'Universal', city: 'Hollywood', state: 'Los Angeles', country: 'USA' });
+
+    studio.validate();
+  });
+
 });
