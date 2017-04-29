@@ -12,4 +12,15 @@ describe('studio API', () => {
       .then(studios => assert.deepEqual(studios, []));
   });
 
+  it('POST should add a document', () => {
+    let studio = { name: 'Universal', city: 'Hollywood', state: 'Los Angeles', country: 'USA' };
+    
+    return request.post('/studios')
+      .send(studio)
+      .then(res => res.body)
+      .then(studio => {
+        assert.ok(studio._id);
+      });
+  });
+
 });
