@@ -16,7 +16,7 @@ describe('plant model', () => {
   it('accepts valid documents', () => {
     const studio = new Studio({ name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } });
 
-    studio.validate().then(studio => console.log(studio));
+    studio.validate();
   });
 
 });
