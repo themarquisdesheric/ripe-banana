@@ -13,13 +13,15 @@ describe('studio API', () => {
   });
 
   it('POST should add a document', () => {
-    let studio = { name: 'Universal', city: 'Hollywood', state: 'Los Angeles', country: 'USA' };
+    let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } };
     
     return request.post('/studios')
       .send(studio)
       .then(res => res.body)
-      .then(studio => {
-        assert.ok(studio._id);
+      .then(saved => {
+        assert.ok(saved._id);
+
+        studio = saved;
       });
   });
 
