@@ -40,7 +40,11 @@ describe('studio API', () => {
       .then(studio => assert.equal(studio.name, 'Universal Studios'));
   });
 
-  // TODO: GET /studios/:id	 returns  { name, address, films: [ title ] }
+  // TODO: make route for films first, then use it to add a film to test this
+  
+  // it('GET /studios/:id	 returns  { name, address, films: [ title ] }', () => {
+  //   return request.get(`/studios/${}`)
+  // })
 
   // TODO: studios cannot be deleted if there are films 
 
