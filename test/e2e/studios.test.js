@@ -12,9 +12,9 @@ describe('studio API', () => {
       .then(studios => assert.deepEqual(studios, []));
   });
 
+  let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } };
+
   it('POST should add a document', () => {
-    let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } };
-    
     return request.post('/studios')
       .send(studio)
       .then(res => res.body)
@@ -29,6 +29,17 @@ describe('studio API', () => {
     return request.get('/studios')
       .then(res => res.body)
       .then(studios => assert.notProperty(studios[0], 'address'));
+  });
+
+  //TODO GET /studios/:id	 returns  { name, address, films: [ title ] }
+
+  it('PUT should update a document', () => {
+    studio.name = 'Universal Studios';
+
+    return request.put(`/studios/${studio._id}`)
+      .send(studio)
+      .then(res => res.body)
+      .then(studio => assert.equal(studio.name, 'Universal Studios'));
   });
 
 });
