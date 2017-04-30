@@ -31,8 +31,6 @@ describe('studio API', () => {
       .then(studios => assert.notProperty(studios[0], 'address'));
   });
 
-  //TODO GET /studios/:id	 returns  { name, address, films: [ title ] }
-
   it('PUT should update a document', () => {
     studio.name = 'Universal Studios';
 
@@ -41,5 +39,9 @@ describe('studio API', () => {
       .then(res => res.body)
       .then(studio => assert.equal(studio.name, 'Universal Studios'));
   });
+
+  // TODO: GET /studios/:id	 returns  { name, address, films: [ title ] }
+
+  // TODO: studios cannot be deleted if there are films 
 
 });
