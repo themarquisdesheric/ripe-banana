@@ -12,4 +12,15 @@ describe('film API', () => {
       .then(films => assert.deepEqual(films, []));
   });
 
+  let waterWorld = { title: 'Waterworld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
+
+  it('POST should add a document', () => {
+    return request.post('/films')
+      .send(waterWorld)
+      .then(res => res.body)
+      .then(saved => {
+        assert.ok(saved._id);
+      });
+  });
+
 });
