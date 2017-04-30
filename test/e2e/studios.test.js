@@ -25,4 +25,10 @@ describe('studio API', () => {
       });
   });
 
+  it('GET should return just the name property of each document', () => {
+    return request.get('/studios')
+      .then(res => res.body)
+      .then(studios => assert.deepEqual(studios[0], { name: 'Universal' }));
+  });
+
 });
