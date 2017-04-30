@@ -16,7 +16,7 @@ describe('film model', () => {
   });
 
   it('accepts valid documents', () => {
-    const waterWorld = new Film({ title: 'Waterworld',  released: 1998 });
+    const waterWorld = new Film({ title: 'Waterworld', studio: '590643bc2cd3da2808b0e651', released: 1998 });
 
     return waterWorld.validate();
   });
