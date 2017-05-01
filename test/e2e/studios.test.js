@@ -12,7 +12,8 @@ describe('studio API', () => {
       .then(studios => assert.deepEqual(studios, []));
   });
 
-  let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } };
+  let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'CA', country: 'USA' } };
+  // let film = { title: 'WaterWorld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
 
   it('POST should add a document', () => {
     return request.post('/studios')
@@ -40,11 +41,19 @@ describe('studio API', () => {
       .then(studio => assert.equal(studio.name, 'Universal Studios'));
   });
 
-  // TODO: make route for films first, then use it to add a film to test this
-  
-  // it('GET /studios/:id	 returns  { name, address, films: [ title ] }', () => {
-  //   return request.get(`/studios/${}`)
-  // })
+  it('GET /studios/:id	 returns  { name, address, films: [ title ] }', () => {
+    return request.get(`/studios/${studio._id}`)
+      .then(res => res.body)
+      .then(got => {
+        console.log(got);
+
+        assert.propertyVal(got, 'name', 'Universal Studios');
+        assert.propertyVal(got.address, 'city', 'Hollywood');
+        assert.propertyVal(got.address, 'state', 'CA');
+        assert.propertyVal(got.address, 'country', 'USA');
+        assert.propertyVal(got, 'film', 'WaterWorld');
+      });
+  });
 
   // TODO: studios cannot be deleted if there are films 
 
