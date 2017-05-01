@@ -6,15 +6,26 @@ describe('film API', () => {
 
   before(db.drop);
 
+  let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'Los Angeles', country: 'USA' } };
+
+  before(() => {
+    return request.post('/studios')
+      .send(studio)
+      .then(res => res.body)
+      .then(saved => studio = saved);
+  });
+
   it('initial GET should return empty array', () => {
     return request.get('/films')
       .then(res => res.body)
       .then(films => assert.deepEqual(films, []));
   });
 
-  let waterWorld = { title: 'Waterworld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
+  let waterWorld = { title: 'WaterWorld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
 
   it('POST should add a document', () => {
+    waterWorld.studio = studio._id;
+
     return request.post('/films')
       .send(waterWorld)
       .then(res => res.body)
@@ -26,11 +37,12 @@ describe('film API', () => {
   });
 
   it('GET by id should return formatted document [{ title, studio.name }]', () => {
+
     return request.get(`/films/${waterWorld._id}`)
       .then(res => res.body)
       .then(film => {
-        assert.propertyVal(film, 'title', 'Waterworld');
-        assert.propertyVal(film, 'studio', 'Universal Studios');
+        assert.propertyVal(film, 'title', 'WaterWorld');
+        assert.propertyVal(film.studio, 'name', 'Universal');
       });
   });
 
