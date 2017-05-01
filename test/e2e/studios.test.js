@@ -6,14 +6,26 @@ describe('studio API', () => {
 
   before(db.drop);
 
-  it('initial GET should return empty array', () => {
-    return request.get('/studios')
+  let testStudio = { name: 'MGM', address: { city: 'Hollywood', state: 'CA', country: 'USA' } };
+  let film = { title: 'WaterWorld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
+
+  before(() => {
+    return request.post('/studios')
+      .send(testStudio)
       .then(res => res.body)
-      .then(studios => assert.deepEqual(studios, []));
+      .then(saved => testStudio = saved);
+  });
+
+  before(() => {
+    film.studio = testStudio._id;
+
+    return request.post('/films')
+      .send(film)
+      .then(res => res.body)
+      .then(saved => film = saved);
   });
 
   let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'CA', country: 'USA' } };
-  // let film = { title: 'WaterWorld', studio: '590643bc2cd3da2808b0e651', released: 1998 };
 
   it('POST should add a document', () => {
     return request.post('/studios')
@@ -42,19 +54,25 @@ describe('studio API', () => {
   });
 
   it('GET /studios/:id	 returns  { name, address, films: [ title ] }', () => {
-    return request.get(`/studios/${studio._id}`)
+    return request.get(`/studios/${testStudio._id}`)
       .then(res => res.body)
       .then(got => {
-        console.log(got);
-
-        assert.propertyVal(got, 'name', 'Universal Studios');
+        assert.propertyVal(got, 'name', 'MGM');
         assert.propertyVal(got.address, 'city', 'Hollywood');
         assert.propertyVal(got.address, 'state', 'CA');
         assert.propertyVal(got.address, 'country', 'USA');
-        assert.propertyVal(got, 'film', 'WaterWorld');
+        assert.include(got.films, { title: 'WaterWorld' });
       });
   });
 
   // TODO: studios cannot be deleted if there are films 
+
+  
+  // DO AFTER DELETE
+  // it('GET should return empty array', () => {
+  //   return request.get('/studios')
+  //     .then(res => res.body)
+  //     .then(studios => assert.deepEqual(studios, []));
+  // });
 
 });
