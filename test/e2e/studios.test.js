@@ -57,11 +57,9 @@ describe('studio API', () => {
     return request.get(`/studios/${testStudio._id}`)
       .then(res => res.body)
       .then(got => {
-        assert.propertyVal(got, 'name', 'MGM');
-        assert.propertyVal(got.address, 'city', 'Hollywood');
-        assert.propertyVal(got.address, 'state', 'CA');
-        assert.propertyVal(got.address, 'country', 'USA');
-        assert.include(got.films, { title: 'WaterWorld' });
+        delete got._id;
+        delete got.__v;
+        assert.deepEqual(got, { name: 'MGM', films: [{ title: 'WaterWorld' }], address: { city: 'Hollywood', state: 'CA', country: 'USA' } });
       });
   });
 
