@@ -20,6 +20,17 @@ describe('film API', () => {
       .then(res => res.body)
       .then(saved => {
         assert.ok(saved._id);
+
+        waterWorld = saved;
+      });
+  });
+
+  it('GET by id should return formatted document [{ title, studio.name }]', () => {
+    return request.get(`/films/${waterWorld._id}`)
+      .then(res => res.body)
+      .then(film => {
+        assert.propertyVal(film, 'title', 'Waterworld');
+        assert.propertyVal(film, 'studio', 'Universal Studios');
       });
   });
 
