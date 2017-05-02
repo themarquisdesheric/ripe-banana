@@ -69,7 +69,11 @@ describe('studio API', () => {
       .then(response => assert.isTrue(response.removed));
   });
   
-  // TODO: studios cannot be deleted if there are films 
+  it('studios cannot be deleted if they have films', () => {
+    return request.delete(`/studios/${testStudio._id}`)
+      .then(res => res.body)
+      .then(response => assert.isFalse(response.removed));
+  });
   
   // DO AFTER DELETE
   // it('GET should return empty array', () => {
