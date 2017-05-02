@@ -37,13 +37,21 @@ describe('film API', () => {
   });
 
   it('GET by id should return formatted document [{ title, studio.name }]', () => {
-
     return request.get(`/films/${waterWorld._id}`)
       .then(res => res.body)
       .then(film => {
         assert.propertyVal(film, 'title', 'WaterWorld');
         assert.propertyVal(film.studio, 'name', 'Universal');
       });
+  });
+
+  it('PUT should update a film', () => {
+    waterWorld.released = 2000;
+
+    return request.put(`/films/${waterWorld._id}`)
+      .send(waterWorld)
+      .then(res => res.body)
+      .then(film => assert.equal(film.released, 2000));
   });
 
 });

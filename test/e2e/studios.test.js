@@ -74,9 +74,13 @@ describe('studio API', () => {
       .then(res => res.body)
       .then(response => assert.isFalse(response.removed));
   });
-  
-  // DO AFTER DELETE
-  // it('GET should return empty array', () => {
+
+
+  // TODO: setup delete route for films, then use delete the film before deleting the studio so you can test this
+  // it('GET should return empty array if no studios exist', () => {
+
+  //   request.delete()
+
   //   return request.get('/studios')
   //     .then(res => res.body)
   //     .then(studios => assert.deepEqual(studios, []));
