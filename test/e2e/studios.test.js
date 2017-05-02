@@ -66,8 +66,7 @@ describe('studio API', () => {
   it('DELETE should remove studio if it does not have films', () => {
     return request.delete(`/studios/${studio._id}`)
       .then(res => res.body)
-      .then(() => request.get('/studios'))
-      .then(studios => assert.equal(studios.length, 1));
+      .then(response => assert.isTrue(response.removed));
   });
   
   // TODO: studios cannot be deleted if there are films 
