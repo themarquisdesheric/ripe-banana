@@ -63,8 +63,14 @@ describe('studio API', () => {
       });
   });
 
+  it('DELETE should remove studio if it does not have films', () => {
+    return request.delete(`/studios/${studio._id}`)
+      .then(res => res.body)
+      .then(() => request.get('/studios'))
+      .then(studios => assert.equal(studios.length, 1));
+  });
+  
   // TODO: studios cannot be deleted if there are films 
-
   
   // DO AFTER DELETE
   // it('GET should return empty array', () => {
