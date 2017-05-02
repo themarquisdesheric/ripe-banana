@@ -16,15 +16,6 @@ describe('studio API', () => {
       .then(saved => testStudio = saved);
   });
 
-  before(() => {
-    film.studio = testStudio._id;
-
-    return request.post('/films')
-      .send(film)
-      .then(res => res.body)
-      .then(saved => film = saved);
-  });
-
   let studio = { name: 'Universal', address: { city: 'Hollywood', state: 'CA', country: 'USA' } };
 
   it('POST should add a document', () => {
@@ -53,6 +44,19 @@ describe('studio API', () => {
       .then(studio => assert.equal(studio.name, 'Universal Studios'));
   });
 
+  it('adds a film to a studio', () => {
+    film.studio = testStudio._id;
+
+    return request.post('/films')
+      .send(film)
+      .then(res => res.body)
+      .then(saved => {
+        assert.ok(saved.studio);
+
+        film = saved;
+      });
+  });
+
   it('GET /studios/:id	 returns  { name, address, films: [ title ] }', () => {
     return request.get(`/studios/${testStudio._id}`)
       .then(res => res.body)
@@ -75,15 +79,17 @@ describe('studio API', () => {
       .then(response => assert.isFalse(response.removed));
   });
 
+  it('removing a film allows you to delete its parent studio', () => {
+    return request.delete(`/films/${film._id}`)
+      .then(() => request.delete(`/studios/${testStudio._id}`))
+      .then(res => res.body)
+      .then(result => assert.isTrue(result.removed));
+  });
 
-  // TODO: setup delete route for films, then use delete the film before deleting the studio so you can test this
-  // it('GET should return empty array if no studios exist', () => {
-
-  //   request.delete()
-
-  //   return request.get('/studios')
-  //     .then(res => res.body)
-  //     .then(studios => assert.deepEqual(studios, []));
-  // });
+  it('GET should return empty array if no studios exist', () => {
+    return request.get('/studios')
+      .then(res => res.body)
+      .then(studios => assert.deepEqual(studios, []));
+  });
 
 });
