@@ -54,4 +54,10 @@ describe('film API', () => {
       .then(film => assert.equal(film.released, 2000));
   });
 
+  it('DELETE should remove a film if it exists', () => {
+    return request.delete(`/films/${waterWorld._id}`)
+      .then(res => res.body)
+      .then(result => assert.isTrue(result.removed));
+  });
+
 });
